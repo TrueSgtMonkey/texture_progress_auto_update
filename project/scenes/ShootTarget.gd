@@ -30,14 +30,17 @@ func createShot():
 	shotInstance.global_position = global_position
 	get_parent().add_child(shotInstance)
 	weakShot = false
-	power = 0
+	setPower(0)
 	Globals.shot = true
+	
+func setPower(power : int):
+	self.power = power
+	Events.emit_signal("power_changed", power)
 
 func count():
-	power += 1
+	setPower(power + 1)
 	if weakShot:
-		power = 1
+		setPower(1)
 	if(power == 9):
-		power = 1
+		setPower(1)
 		weakShot = true
-	print(power)
