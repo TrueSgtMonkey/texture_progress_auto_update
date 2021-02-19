@@ -17,7 +17,8 @@ func _physics_process(delta):
 	var slides = get_slide_count()
 	for slide in slides:
 		var touched = get_slide_collision(slide)
-		setVelocity(((velocity.normalized() + touched.normal) / 2.0) * velocity.length() * 2.0)
+		velocity = ((velocity.normalized() + touched.normal) / 2.0) * velocity.length() * 2.0
+		friction = -velocity * 0.005
 	$Camera2D.zoom += (Vector2(velocity.length(), velocity.length()) / 500) / 1000
 	if $Camera2D.zoom.length() < Vector2(1,1).length():
 		$Camera2D.zoom = Vector2(1,1)
