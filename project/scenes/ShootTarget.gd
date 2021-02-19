@@ -8,16 +8,18 @@ var weakShot := false
 
 func _ready():
 	$Timer.connect("timeout", self, "count")
+	global_position += $ShotMarker.get_rect().size / 2.0
 
 func _input(event):
-	$Target.global_position = get_global_mouse_position()
-	if event.is_action_pressed("shoot"):
-		$Timer.autostart = true
-		$Timer.start()
-	if event.is_action_released("shoot"):
-		$Timer.autostart = false
-		$Timer.stop()
-		createShot()
+	if !Globals.shot:
+		$Target.global_position = get_global_mouse_position()
+		if event.is_action_pressed("shoot"):
+			$Timer.autostart = true
+			$Timer.start()
+		if event.is_action_released("shoot"):
+			$Timer.autostart = false
+			$Timer.stop()
+			createShot()
 
 func createShot():
 	var shotInstance = Shot.instance()
@@ -29,12 +31,13 @@ func createShot():
 	get_parent().add_child(shotInstance)
 	weakShot = false
 	power = 0
+	Globals.shot = true
 
 func count():
 	power += 1
-	print(power)
 	if weakShot:
 		power = 1
 	if(power == 9):
 		power = 1
 		weakShot = true
+	print(power)
